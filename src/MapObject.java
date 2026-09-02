@@ -1,5 +1,3 @@
-package src;
-
 public abstract class MapObject {
     protected final Cell position;
 

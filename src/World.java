@@ -1,5 +1,3 @@
-package src;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,4 +26,3 @@ public class World {
     public Colony getColony() { return colony; }
     public List<FoodSource> getFoodSources() { return Collections.unmodifiableList(foodSources); }
 }
-

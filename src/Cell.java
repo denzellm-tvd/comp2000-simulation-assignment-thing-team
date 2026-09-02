@@ -1,5 +1,3 @@
-package src;
-
 public class Cell {
     private final int x;
     private final int y;
@@ -27,4 +25,3 @@ public class Cell {
         if (pheromone < 0.0001) pheromone = 0.0;
     }
 }
-

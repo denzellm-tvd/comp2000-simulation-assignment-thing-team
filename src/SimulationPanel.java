@@ -1,0 +1,62 @@
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+public class SimulationPanel extends JPanel {
+    private static final int CELL_SIZE = 14;
+    private final World world;
+    private final Timer timer;
+
+    public SimulationPanel(World world) {
+        this.world = world;
+        Map map = world.getMap();
+        setPreferredSize(new Dimension(map.getWidth() * CELL_SIZE, map.getHeight() * CELL_SIZE + 30));
+
+        timer = new Timer(60, e -> {
+            world.update();
+            repaint();
+        });
+        timer.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Map map = world.getMap();
+
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell c = map.getCell(x, y);
+                double p = Math.min(c.getPheromone(), 20.0) / 20.0;
+                int shade = 255 - (int)(180 * p);
+                g.setColor(new Color(255, shade, shade));
+                g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                g.setColor(new Color(235, 235, 235));
+                g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+        }
+
+        Nest nest = world.getColony().getNest();
+        g.setColor(Color.BLUE);
+        g.fillRect(nest.getPosition().getX() * CELL_SIZE, nest.getPosition().getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+        g.setColor(new Color(0, 140, 0));
+        for (FoodSource source : world.getFoodSources()) {
+            if (source.isAvailable()) {
+                g.fillRect(source.getPosition().getX() * CELL_SIZE, source.getPosition().getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+        }
+
+        for (Ant ant : world.getColony().getAnts()) {
+            g.setColor(ant.isCarryingFood() ? Color.ORANGE : Color.BLACK);
+            int px = ant.getX() * CELL_SIZE + 4;
+            int py = ant.getY() * CELL_SIZE + 4;
+            g.fillOval(px, py, 6, 6);
+        }
+
+        g.setColor(Color.DARK_GRAY);
+        g.drawString("Food in nest: " + nest.getStoredFood(), 8, map.getHeight() * CELL_SIZE + 20);
+    }
+}

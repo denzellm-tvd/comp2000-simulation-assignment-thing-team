@@ -1,5 +1,3 @@
-package src;
-
 public abstract class Ant {
     protected Cell position;
     protected boolean carryingFood;
