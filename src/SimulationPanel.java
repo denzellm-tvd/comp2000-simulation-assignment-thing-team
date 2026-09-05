@@ -45,7 +45,8 @@ public class SimulationPanel extends JPanel {
         g.setColor(new Color(0, 140, 0));
         for (FoodSource source : world.getFoodSources()) {
             if (source.isAvailable()) {
-                g.fillRect(source.getPosition().getX() * CELL_SIZE, source.getPosition().getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                g.setColor(new Color(0, (int) Math.round(140 * source.getPercent()), 0));
+                g.fillRect(source.getPosition().getX() * CELL_SIZE, source.getPosition().getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);                
             }
         }
 
@@ -58,5 +59,6 @@ public class SimulationPanel extends JPanel {
 
         g.setColor(Color.DARK_GRAY);
         g.drawString("Food in nest: " + nest.getStoredFood(), 8, map.getHeight() * CELL_SIZE + 20);
+        g.drawString("Total ants: " + world.getColony().getAnts().size() + " (Scouts: " + world.getColony().getScouts().size() + ", Foragers: " + world.getColony().getForagers().size() + ")", 128, map.getHeight() * CELL_SIZE + 20);
     }
 }

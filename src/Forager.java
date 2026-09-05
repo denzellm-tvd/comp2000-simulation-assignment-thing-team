@@ -25,7 +25,7 @@ public class Forager extends Ant {
         }
 
         List<Cell> bestCells = neighbours.stream()
-                .filter(cell -> Math.abs(cell.getPheromone() - strongest) < 0.000001)
+                .filter(cell -> Math.abs(cell.getPheromone() - strongest) < 10)
                 .toList();
 
         return bestCells.get(random.nextInt(bestCells.size()));

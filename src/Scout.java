@@ -6,6 +6,7 @@ public class Scout extends Ant {
 
     public Scout(Cell position) {
         super(position);
+        this.scouting = true;
     }
 
     @Override

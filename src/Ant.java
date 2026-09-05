@@ -1,6 +1,7 @@
 public abstract class Ant {
     protected Cell position;
     protected boolean carryingFood;
+    protected boolean scouting;
 
     public Ant(Cell position) {
         if (position == null) {
@@ -8,6 +9,7 @@ public abstract class Ant {
         }
         this.position = position;
         this.carryingFood = false;
+        this.scouting = false;
     }
 
     public void move(Cell target) {
@@ -22,6 +24,10 @@ public abstract class Ant {
 
     public boolean isReturningHome() {
         return carryingFood;
+    }
+
+    public boolean isScouting() {
+        return scouting;
     }
 
     public int getX() {

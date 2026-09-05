@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class World {
     private final Map map;
@@ -8,8 +9,11 @@ public class World {
     private final List<FoodSource> foodSources;
 
     public World(int width, int height) {
+        Random random = new Random();
+        int randomX = random.nextInt(50);
+        int randomY = random.nextInt(35);
         this.map = new Map(width, height);
-        this.colony = new Colony(new Nest(map.getCell(2, height / 2)));
+        this.colony = new Colony(new Nest(map.getCell(randomX, randomY)));
         this.foodSources = new ArrayList<>();
     }
 
@@ -19,7 +23,7 @@ public class World {
 
     public void update() {
         colony.update(this);
-        map.evaporatePheromones(0.015);
+        map.evaporatePheromones(0.02);
     }
 
     public Map getMap() { return map; }

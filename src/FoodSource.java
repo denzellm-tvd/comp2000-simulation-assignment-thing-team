@@ -1,10 +1,12 @@
 public class FoodSource extends MapObject {
+    private int initialAmount;
     private int amount;
 
-    public FoodSource(Cell position, int amount) {
+    public FoodSource(Cell position, int amount, int initialAmount) {        
         super(position);
         if (amount < 0) throw new IllegalArgumentException("Food amount cannot be negative.");
         this.amount = amount;
+        this.initialAmount = initialAmount;
     }
 
     @Override
@@ -23,4 +25,6 @@ public class FoodSource extends MapObject {
     }
 
     public int getAmount() { return amount; }
+    public int getInitialAmount() { return initialAmount; }
+    public double getPercent() { return (double) amount / initialAmount; }
 }

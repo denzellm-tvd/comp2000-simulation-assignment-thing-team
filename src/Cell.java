@@ -22,6 +22,6 @@ public class Cell {
             throw new IllegalArgumentException("Evaporation rate must be between 0 and 1.");
         }
         pheromone *= (1.0 - rate);
-        if (pheromone < 0.0001) pheromone = 0.0;
+        if (pheromone < 0.0) pheromone = 0.0;
     }
 }

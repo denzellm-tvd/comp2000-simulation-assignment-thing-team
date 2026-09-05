@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Colony {
     private final List<Ant> ants;
+    private final List<Ant> scouts;
+    private final List<Ant> foragers;
     private final Nest nest;
 
     public Colony(Nest nest) {
@@ -12,16 +14,29 @@ public class Colony {
         }
         this.nest = nest;
         this.ants = new ArrayList<>();
+        this.scouts = new ArrayList<>();
+        this.foragers = new ArrayList<>();
     }
 
-    public void addAnt(Ant ant) {
+    public void addAnt(Ant ant, String antType) {
         if (ant != null) {
             ants.add(ant);
+            if (antType == "Scout") {
+                scouts.add(ant);
+            } else if (antType == "Forager") { foragers.add(ant); }
         }
     }
 
     public List<Ant> getAnts() {
         return Collections.unmodifiableList(ants);
+    }
+
+    public List<Ant> getScouts() {
+        return Collections.unmodifiableList(scouts);
+    }
+
+    public List<Ant> getForagers() {
+        return Collections.unmodifiableList(foragers);
     }
 
     public Nest getNest() {
@@ -43,13 +58,23 @@ public class Colony {
             ant.move(nextCell);
 
             if (ant.isCarryingFood()) {
-                ant.getPosition().addPheromone(2.0);
+                ant.getPosition().addPheromone(10.0);
+            }
+
+            if (ant.isScouting()) {
+                ant.getPosition().addPheromone(1.0);
             }
 
             for (FoodSource source : world.getFoodSources()) {
                 if (source.getPosition() == ant.getPosition()) {
                     source.interact(ant);
                     break;
+                }
+                for (Cell cell : map.getNeighbours(source.getPosition())) {
+                    if (source.isAvailable()) {
+                        source.getPosition().addPheromone(0.012);
+                        cell.addPheromone(0.01);
+                    } else break;
                 }
             }
 
