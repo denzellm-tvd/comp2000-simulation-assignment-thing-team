@@ -23,7 +23,7 @@ public class World {
 
     public void update() {
         colony.update(this);
-        map.evaporatePheromones(0.02);
+        map.evaporatePheromones(0.05);
     }
 
     public Map getMap() { return map; }

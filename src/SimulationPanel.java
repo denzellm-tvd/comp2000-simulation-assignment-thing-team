@@ -1,8 +1,8 @@
-import javax.swing.JPanel;
-import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class SimulationPanel extends JPanel {
     private static final int CELL_SIZE = 14;
@@ -51,7 +51,11 @@ public class SimulationPanel extends JPanel {
         }
 
         for (Ant ant : world.getColony().getAnts()) {
-            g.setColor(ant.isCarryingFood() ? Color.ORANGE : Color.BLACK);
+            if (ant.isScouting()) {
+                g.setColor(ant.isCarryingFood() ? Color.GREEN : Color.BLUE);
+            } else {
+                g.setColor(ant.isCarryingFood() ? Color.ORANGE : Color.BLACK);
+            }
             int px = ant.getX() * CELL_SIZE + 4;
             int py = ant.getY() * CELL_SIZE + 4;
             g.fillOval(px, py, 6, 6);

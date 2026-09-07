@@ -20,7 +20,7 @@ public class Forager extends Ant {
                 .max()
                 .orElse(0.0);
 
-        if (strongest == 0.0 || random.nextDouble() < 0.20) {
+        if (strongest == 0.0) {
             return neighbours.get(random.nextInt(neighbours.size()));
         }
 
