@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,9 +25,15 @@ public class Forager extends Ant {
             return neighbours.get(random.nextInt(neighbours.size()));
         }
 
-        List<Cell> bestCells = neighbours.stream()
-                .filter(cell -> Math.abs(cell.getPheromone() - strongest) < 10)
-                .toList();
+        List<Cell> bestCells = new ArrayList<>();
+        for (Cell cell : neighbours) {
+            if (Math.abs(cell.getPheromone() - strongest) < 10) {
+                bestCells.add(cell);
+            }
+        }
+        if (bestCells.isEmpty()) {
+            return neighbours.get(random.nextInt(neighbours.size()));
+        }
 
         return bestCells.get(random.nextInt(bestCells.size()));
     }

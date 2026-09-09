@@ -8,15 +8,12 @@ public class Main {
             World world = new World(50, 35);
             Map map = world.getMap();
             Random random = new Random();
-            int randomX = random.nextInt(50);
-            int randomY = random.nextInt(35);
-
-            //world.addFoodSource(new FoodSource(map.getCell(randomX, randomY), 1));
-            //world.addFoodSource(new FoodSource(map.getCell(randomX, randomY), 1));
+            int width = map.getWidth();
+            int height = map.getHeight();
             for (int i = 0; i < 3; i++) {
+                int randomX = random.nextInt(width);
+                int randomY = random.nextInt(height);
                 world.addFoodSource(new FoodSource(map.getCell(randomX, randomY), 250, 250));
-                randomX = random.nextInt(50);
-                randomY = random.nextInt(35);
             }
 
             Nest nest = world.getColony().getNest();

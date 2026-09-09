@@ -18,12 +18,18 @@ public class Colony {
         this.foragers = new ArrayList<>();
     }
 
+    public void addAnt(Ant ant) {
+        addAnt(ant, ant instanceof Scout ? "Scout" : "Forager");
+    }
+
     public void addAnt(Ant ant, String antType) {
         if (ant != null) {
             ants.add(ant);
-            if (antType == "Scout") {
+            if ("Scout".equals(antType) || ant instanceof Scout) {
                 scouts.add(ant);
-            } else if (antType == "Forager") { foragers.add(ant); }
+            } else if ("Forager".equals(antType) || ant instanceof Forager) {
+                foragers.add(ant);
+            }
         }
     }
 
@@ -66,19 +72,13 @@ public class Colony {
             }
 
             for (FoodSource source : world.getFoodSources()) {
-                if (source.getPosition() == ant.getPosition()) {
+                if (sameCell(source.getPosition(), ant.getPosition())) {
                     source.interact(ant);
                     break;
                 }
-                for (Cell cell : map.getNeighbours(source.getPosition())) {
-                    if (source.isAvailable()) {
-                        source.getPosition().addPheromone(0.012);
-                        cell.addPheromone(0.01);
-                    } else break;
-                }
             }
 
-            if (nest.getPosition() == ant.getPosition()) {
+            if (sameCell(nest.getPosition(), ant.getPosition())) {
                 nest.interact(ant);
             }
         }
@@ -101,5 +101,9 @@ public class Colony {
 
     private int distance(Cell a, Cell b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
+    }
+
+    private boolean sameCell(Cell a, Cell b) {
+        return a != null && b != null && a.getX() == b.getX() && a.getY() == b.getY();
     }
 }

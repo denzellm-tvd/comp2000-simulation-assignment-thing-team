@@ -10,8 +10,7 @@ public class SimulationFrame extends JFrame {
 
         this.world = world;
 
-        panel =
-                new SimulationPanel(world);
+        panel = new SimulationPanel(world);
 
         setTitle(
                 "Ant Colony Foraging Simulation"
