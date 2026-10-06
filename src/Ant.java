@@ -2,14 +2,19 @@ public abstract class Ant {
     protected Cell position;
     protected boolean carryingFood;
     protected boolean scouting;
+    protected MoveStrategy strategy;
 
-    public Ant(Cell position) {
+    public Ant(Cell position, MoveStrategy strategy) {
         if (position == null) {
             throw new IllegalArgumentException("Ant position cannot be null.");
+        }
+        if (strategy == null) {
+            throw new IllegalArgumentException("Move strategy cannot be null.");
         }
         this.position = position;
         this.carryingFood = false;
         this.scouting = false;
+        this.strategy = strategy;
     }
 
     public void move(Cell target) {
@@ -55,5 +60,7 @@ public abstract class Ant {
         }
     }
 
-    public abstract Cell chooseNextCell(Map map);
+    public Cell chooseNextCell(Map map) {
+        return strategy.choose(this, map);
+    }
 }
