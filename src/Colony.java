@@ -49,17 +49,22 @@ public class Colony {
         return nest;
     }
 
+    public long countCarryingFood() {
+        return ants.stream().filter(Ant::isCarryingFood).count();
+    }
+
+    public long countScouting() {
+        return ants.stream().filter(Ant::isScouting).count();
+    }
+
     public void update(World world) {
         Map map = world.getMap();
+        MoveStrategy goHome = Movement.closestTo(nest.getPosition());
 
         for (Ant ant : ants) {
-            Cell nextCell;
-
-            if (ant.isReturningHome()) {
-                nextCell = chooseStepTowards(ant.getPosition(), nest.getPosition(), map);
-            } else {
-                nextCell = ant.chooseNextCell(map);
-            }
+            Cell nextCell = ant.isReturningHome()
+                    ? goHome.choose(ant, map)
+                    : ant.chooseNextCell(map);
 
             ant.move(nextCell);
 
@@ -71,36 +76,15 @@ public class Colony {
                 ant.getPosition().addPheromone(1.0);
             }
 
-            for (FoodSource source : world.getFoodSources()) {
-                if (sameCell(source.getPosition(), ant.getPosition())) {
-                    source.interact(ant);
-                    break;
-                }
-            }
+            world.getFoodSources().stream()
+                    .filter(source -> sameCell(source.getPosition(), ant.getPosition()))
+                    .findFirst()
+                    .ifPresent(source -> source.interact(ant));
 
             if (sameCell(nest.getPosition(), ant.getPosition())) {
                 nest.interact(ant);
             }
         }
-    }
-
-    private Cell chooseStepTowards(Cell from, Cell target, Map map) {
-        Cell best = from;
-        int bestDistance = distance(from, target);
-
-        for (Cell cell : map.getNeighbours(from)) {
-            int currentDistance = distance(cell, target);
-            if (currentDistance < bestDistance) {
-                best = cell;
-                bestDistance = currentDistance;
-            }
-        }
-
-        return best;
-    }
-
-    private int distance(Cell a, Cell b) {
-        return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 
     private boolean sameCell(Cell a, Cell b) {
