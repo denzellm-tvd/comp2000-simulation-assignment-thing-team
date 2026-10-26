@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Map {
     private final int width;
@@ -49,10 +50,10 @@ public class Map {
     }
 
     public void evaporatePheromones(double rate) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                cells[x][y].evaporate(rate);
-            }
+        IntStream.range(0, width)
+        .forEach(x ->
+             IntStream.range(0, height)
+             .forEach(y -> cells[x][y].evaporate(rate))
+            );
         }
-    }
 }
