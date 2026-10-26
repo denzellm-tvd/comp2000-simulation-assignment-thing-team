@@ -50,10 +50,10 @@ public class Map {
     }
 
     public void evaporatePheromones(double rate) {
-        IntStream.range(0, width)
+    IntStream.range(0, width)
         .forEach(x ->
-             IntStream.range(0, height)
-             .forEach(y -> cells[x][y].evaporate(rate))
-            );
-        }
+            IntStream.range(0, height)
+                .forEach(y -> cells[x][y].evaporate(rate))
+        );
+    }
 }
