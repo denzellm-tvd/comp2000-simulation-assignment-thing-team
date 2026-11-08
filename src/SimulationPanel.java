@@ -1,8 +1,8 @@
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Map;
+import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel {
     private World world;
@@ -74,6 +74,9 @@ public class SimulationPanel extends JPanel {
     private void drawInformation(Graphics2D g) {
         g.setColor(Color.BLACK);
         int totalFood = world.getFoodSources().stream().mapToInt(FoodSource::getFoodAmount).sum();
+        if (totalFood == 0) {
+            world.createFoodSources();
+        }
         Map<String, Long> roles = world.getColony().countByRole();
         g.drawString("Ants: " + world.getColony().size()
                 + " Scout=" + roles.getOrDefault("Scout", 0L)
